@@ -1,0 +1,65 @@
+<th:block xmlns:th="http://www.thymeleaf.org">
+    <section class="text-center">
+        <div class="container">
+            <h4 style="padding: 30px">Shopping cart for
+                <th:block th:if="${#request.getRemoteUser() != null}" th:text="${#request.getRemoteUser()}"></th:block>
+            </h4>
+        </div>
+    </section>
+
+    <div th:if="${hasError}">
+        <h5 class="text-center text-danger" th:text="${error}"></h5>
+    </div>
+
+    <div class="container mb-4">
+        <div class="row">
+            <div class="col-12" th:if="${products.size() > 0}">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">Product</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Price</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="product : ${products}" class="cart-item">
+                            <td>
+                                <div>
+                                    <img th:src="@{${product.getProduct().getImage()}}" width="200px">
+                                    <p th:text="${product.getProduct().getName()}"></p>
+                                    <p th:if="${product.getSize()}!=null" th:text="'Size: '+${product.getSize()}"></p>
+                                    <p th:if="${product.getFlavor()}!=null" th:text="'Flavor: '+${product.getFlavor()}"></p>
+                                </div>
+                            </td>
+                            <td th:text="${product.getQuantity()}"></td>
+                            <td th:text="'$'+${product.getPrice()}"></td>
+                            <td><a class="btn btn-lg" style="background: #1c0221; color: #adbdff" th:href="@{'/shopping-cart/{cartId}/{productId}' (cartId=${shoppingCartId},productId=${product.getId()})}">Remove from cart</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <form action="/shopping-cart/charge" method='POST' id='checkout-form' class="text-center">
+                    <input type='hidden' th:value="${amount}" name='amount' />
+                    <input type="hidden" th:value="${shoppingCartId}" name="cartId">
+                    <label><b>Total: <span th:text="'$'+${price}"></span></b></label><br>
+                    <script
+                            src='https://checkout.stripe.com/checkout.js'
+                            class='stripe-button'
+                            th:attr='data-key=${stripePublicKey},
+                            data-amount=${amount},
+                            data-currency=${currency}'
+                            data-name='Pet Shop'
+                            data-description='Checkout'
+                            data-image
+                                    ='https://www.baeldung.com/wp-content/themes/baeldung/favicon/android-chrome-192x192.png'
+                            data-locale='auto'
+                            data-zip-code='false'>
+                    </script>
+                </form>
+            </div>
+        </div>
+    </div>
+</th:block>

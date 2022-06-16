@@ -1,0 +1,52 @@
+<div xmlns:th="http://www.thymeleaf.org">
+    <section class="mt-5">
+        <div class="container">
+            <h3 class="text-center">All orders</h3>
+        </div>
+    </section>
+
+    <div class="container mb-4 mt-3">
+    <div class="row">
+        <div class="col-12" th:if="${orders.size() > 0}">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Shopping Cart Id</th>
+                        <th scope="col">Date Created</th>
+                        <th scope="col">User email</th>
+                        <th scope="col">Products</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="order : ${orders}" class="product">
+                        <td th:text="${order.getId()}"></td>
+                        <td th:text="${order.getDateCreated()}"></td>
+                        <td th:text="${order.getUser().getEmail()}"></td>
+                        <td>
+                            <ul>
+                                <li th:each="product : ${order.getProducts()}" th:text="${product.getProduct().getName()}"></li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li th:each="product : ${order.getProducts()}" th:text="${product.getQuantity()}"></li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li th:each="product : ${order.getProducts()}" th:text="${product.getProduct().getPrice()}"></li>
+                            </ul>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <a class="btn btn-lg" style="background: #1c0221; color: #adbdff; margin-left: 570px" th:href="@{/admin/export/orders}">Export to Excel</a>
+        </div>
+    </div>
+    </div>
+</div>

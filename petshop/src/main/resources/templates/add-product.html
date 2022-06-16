@@ -1,0 +1,110 @@
+<th:block xmlns:th="http://www.thymeleaf.org">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-5">
+                <form th:action="@{'/admin/products/add/{id}' (id=${product?.id})}" method="POST" enctype="multipart/form-data">
+                    <input id="id" type="hidden" name="id" th:value="(${product} != null ? ${product.getId()} : '')">
+                    <div class="form-group">
+                        <label for="name">Product name</label>
+                        <input type="text"
+                               class="form-control"
+                               id="name"
+                               name="name"
+                               maxlength="255"
+                               th:value="(${product} != null ? ${product.getName()} : '')"
+                               required
+                               placeholder="Enter product name">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Product description</label>
+                        <input type="text"
+                               class="form-control"
+                               id="description"
+                               name="description"
+                               maxlength="255"
+                               th:value="(${product} != null ? ${product.getDescription()} : '')"
+                               required
+                               placeholder="Enter product description">
+                    </div>
+                    <div class="form-group" th:if="${product} == null">
+                        <label for="image">Photo</label>
+                        <input type="file"
+                               class="form-control"
+                               name="image"
+                               id="image"
+                               required
+                               th:value="(${product} != null ? ${product.getImage()} : '')"
+                               accept="image/png, image/jpeg" />
+                    </div>
+                    <div class="form-group" th:if="${product} != null">
+                        <label for="image">Change Photo</label>
+                        <input type="file"
+                               class="form-control"
+                               name="image"
+                               th:value="${product.getImage()}"
+                               title=" "
+                               accept="image/png, image/jpeg" />
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price</label>
+                        <input type="text"
+                               class="form-control"
+                               id="price"
+                               name="price"
+                               required
+                               th:value="(${product} != null ? ${product.getPrice()} : '')"
+                               placeholder="Price">
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="text"
+                               class="form-control"
+                               id="quantity"
+                               name="quantity"
+                               required
+                               th:value="(${product} != null ? ${product.getQuantity()} : '')"
+                               placeholder="Quantity">
+                    </div>
+                    <div class="form-group">
+                        <label for="animal">Animal</label>
+                        <select id="animal" name="animal" class="form-control">
+                            <option th:if="${product} != null"
+                                    th:selected="${product.getCategory() != null &&
+                                product.getCategory() == cat}"
+                                    th:each="cat : ${animalCategories}"
+                                    th:value="${cat}"
+                                    th:text="${cat.getDisplayValue()}">
+                            </option>
+                            <option th:if="${product} == null"
+                                    th:each="cat : ${animalCategories}"
+                                    th:value="${cat}"
+                                    th:text="${cat.getDisplayValue()}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory">Category</label>
+                        <select id="productCategory" name="productCategory" class="form-control">
+                            <option th:if="${product} != null"
+                                    th:selected="${product.getProductCategory() != null &&
+                                product.getProductCategory() == pr}"
+                                    th:each="pr : ${productCategories}"
+                                    th:value="${pr}"
+                                    th:text="${pr.getDisplayValue()}">
+                            </option>
+                            <option th:if="${product} == null"
+                                    th:each="pr : ${productCategories}"
+                                    th:value="${pr}"
+                                    th:text="${pr.getDisplayValue()}">
+                            </option>
+                        </select>
+                    </div>
+                    <button id="submit" type="submit" style="background: #1c0221; color: #adbdff" class="btn">Submit</button>
+                    <a type="button" class="btn" style="background: #1c0221; color: #adbdff" href="javascript:history.back()">Back</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</th:block>

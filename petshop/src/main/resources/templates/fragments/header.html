@@ -1,0 +1,99 @@
+<style>
+    .dropdown {
+        display: inline-block;
+        position: relative;
+    }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        width: 100%;
+        overflow: auto;
+        box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.4);
+    }
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+    .dropdown-content a {
+        display: block;
+        color: #000000;
+        background: #adbdff;
+        padding: 5px;
+        text-decoration: none;
+    }
+    .dropdown-content a:hover {
+        color: #adbdff;
+        background-color: #33658a;
+    }
+</style>
+<header xmlns:th="http://www.thymeleaf.org">
+    <nav class="navbar navbar-expand-md">
+<a class="navbar-brand" style="color: #adbdff" href="/">PET SHOP</a>
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+        aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+</button>
+
+        <div class="container">
+    <form class="form-inline my-2 my-lg-0" style="margin-left: 500px" method="get" action="/products/">
+        <div class="input-group input-group-sm">
+            <input type="text" class="form-control" aria-label="Small"
+                   aria-describedby="inputGroup-sizing-sm"
+                   name="searchText"
+                   placeholder="Search..."
+            required>
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-secondary btn-number">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+    <ul class="nav navbar-nav navbar-right">
+        <li class="nav-item" sec:authorize="isAuthenticated()">
+            <a class="btn btn-sm ml-3" style="background: #1c0221; color: #adbdff" href="/shopping-cart">
+                <i class="fa fa-shopping-cart"></i><b> Cart</b>
+            </a>
+        </li>
+        <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+            <a class="btn btn-sm ml-3" style="background: #1c0221; color: #adbdff" href="/admin/orders">
+                <b> Orders</b>
+            </a>
+        </li>
+        <li class="nav-item" sec:authorize="isAuthenticated()">
+            <a class="btn btn-light btn-sm ml-3" style="background: #1c0221; color: #adbdff" href="/logout">
+                 <b>Logout</b>
+            </a>
+        </li>
+        <li class="nav-item" sec:authorize="!isAuthenticated()">
+            <a class="btn btn-light btn-sm ml-3" style="background: #1c0221; color: #adbdff" href="/loginPage">
+                <b>Login</b>
+            </a>
+        </li>
+        <li class="nav-item" sec:authorize="!isAuthenticated()">
+            <a class="btn btn-light btn-sm ml-3" style="background: #1c0221; color: #adbdff" href="/register">
+                <b>Register</b>
+            </a>
+        </li>
+    </ul>
+</div>
+    </nav>
+</header>
+<header xmlns:th="http://www.thymeleaf.org">
+    <nav class="navbar navbar-expand-md" style="background: #adbdff">
+        <div class="container">
+            <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
+                <ul class="navbar-nav m-auto">
+                    <li class="nav-item ml-5" th:each="animal : ${T(mk.ukim.finki.petshop.model.enumerations.AnimalCategory).values()}">
+                        <div class="dropdown">
+                        <a class="nav-link active font-weight-bold" style="color: #1c0221" th:href="@{'/products/{animal}' (animal=${animal})}" th:text="${animal.getDisplayValue()}"></a>
+                            <div class="dropdown-content" style="width: 100px; z-index:999;">
+                                <a th:each="category : ${T(mk.ukim.finki.petshop.model.enumerations.ProductCategory).values()}" style="color: #1c0221" th:href="@{'/products/{animal}/{category}' (animal=${animal},category=${category})}" th:text="${category.getDisplayValue()}"></a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+</header>

@@ -1,0 +1,64 @@
+<style>
+    .center_div{
+        margin: 0 auto;
+        width:30%
+    }
+</style>
+<div class="container center_div" xmlns:th="http://www.thymeleaf.org">
+</div>
+<div class="container center_div">
+    <form class="form-signin mt-xl-5" method="post" action="/register">
+        <h2 class="form-signin-heading text-center">Register</h2>
+        <div class="border border-secondary rounded p-3 text-center mt-3"  style="width: 440px">
+        <p style="width: 400px">
+            <label for="email" class="sr-only">Username</label>
+            <input type="email" id="email" name="email" maxlength="100" class="form-control" placeholder="Email" required=""
+                   autofocus="">
+        </p>
+        <p style="width: 400px">
+            <label for="password" class="sr-only">Password</label>
+            <input type="password" id="password" name="password" maxlength="100" class="form-control" placeholder="Password"
+                   required="">
+        </p>
+        <p style="width: 400px">
+            <label for="repeatedPassword" class="sr-only">Confirm Password</label>
+            <input type="password" id="repeatedPassword" name="repeatedPassword" maxlength="100" class="form-control" onkeyup='check();'
+                   placeholder="Repeat Password" required="">
+            <label id="message"></label>
+        </p>
+        <p style="width: 400px">
+            <label for="name" class="sr-only">Name</label>
+            <input type="text" id="name" name="name" maxlength="100" class="form-control" placeholder="Name" required="" autofocus="">
+        </p>
+        <p>
+            <label for="surname" class="sr-only">Surname</label>
+            <input type="text" id="surname" name="surname" maxlength="100" class="form-control" placeholder="Surname" required=""
+                   autofocus="">
+        </p>
+        <p style="width: 400px">
+            <label for="address" class="sr-only">Address</label>
+            <input type="text" id="address" name="address" maxlength="100" class="form-control" placeholder="Address" required=""
+                   autofocus="">
+        </p>
+
+            <a href="/loginPage">Already have an account? Login here!</a><br>
+        <button class="btn mt-2" type="submit" style="background: #1c0221; color: #adbdff">Sign up</button>
+        </div>
+    </form>
+    <p th:if="${hasError}" th:text="${error}" style="color: red"></p>
+</div>
+<script>
+    const check = function () {
+        const pass1=document.querySelector('#password').value;
+        const pass2=document.querySelector('#repeatedPassword').value;
+        console.log(pass1)
+        console.log(pass2)
+        if (pass1===pass2) {
+            document.querySelector('#message').style.color = 'green';
+            document.querySelector('#message').textContent = 'Passwords Match';
+        } else {
+            document.querySelector('#message').style.color = 'red';
+            document.querySelector('#message').textContent = 'Passwords do not match';
+        }
+    };
+</script>

@@ -1,0 +1,52 @@
+<th:block xmlns:th="http://www.thymeleaf.org">
+    <div class="container" style="margin-left: 180px">
+        <form method="post" th:action="@{'/shopping-cart/add-product/{id}' (id=${product.getId()})}">
+
+        <div class="flex-container mt-5" style="display: flex">
+            <div class="flex-child">
+                <img th:src="@{${product.getImage()}}" width="400px" style="margin-right: 10px">
+            </div>
+            <div class="flex-child">
+                <h3 th:text="${product.getName()}"></h3>
+                <p th:text="${product.getDescription()}" style="width:500px"></p>
+                <h4 >$<label id="price" th:attr="value = ${product.getPrice()}" th:text="${product.getPrice()}">
+                </label></h4>
+                <label for="quantity">Quantity</label><br>
+                <input width="10px" type="number" id="quantity" name="quantity" min="1" value="1" th:max="${product.getQuantity}" required><br>
+                <div th:if="${product.getProductCategory()==T(mk.ukim.finki.petshop.model.enumerations.ProductCategory).SUPPLIES}">
+                    <label for="size">Size</label><br>
+                    <select name="size" id="size">
+                        <option th:each="size : ${T(mk.ukim.finki.petshop.model.enumerations.Size).values()}" th:value="${size}" th:text="${size}"></option>
+                    </select>
+                </div>
+                <div th:if="${product.getProductCategory()==T(mk.ukim.finki.petshop.model.enumerations.ProductCategory).FOOD}">
+                    <label for="flavor">Flavour</label><br>
+                    <select name="flavor" id="flavor">
+                        <option th:value="Salmon">Salmon</option>
+                        <option th:value="Tuna">Tuna</option>
+                        <option th:value="Beef">Beef</option>
+                        <option th:value="Chicken">Chicken</option>
+                        <option th:value="Vegetable">Vegetable</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-lg mt-4" style="background: #1c0221; color: #adbdff;margin-bottom: 0">Add to cart</button>
+                    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a class="btn btn-lg" style="background: #1c0221; color: #adbdff; margin-bottom: 7px;height: 50px" th:href="@{'/admin/products/edit-form/{id}' (id=${product.getId()})}">Edit</a>
+                    </th:block>
+                    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a class="btn btn-lg" style="background: #1c0221; color: #adbdff; margin-bottom: 7px;height: 50px" th:href="@{'/admin/products/delete/{animal}/{id}' (animal=${product.getCategory()},id=${product.getId()})}">Delete</a>
+                    </th:block>
+            </div>
+            </div>
+    </form>
+    </div>
+    <script>
+        const selectElement = document.querySelector('#quantity');
+        let price=parseFloat(document.querySelector('#price').textContent);
+        selectElement.addEventListener('change', (event) => {
+            const result = document.querySelector('#price');
+            const ch=Math.round(((parseInt(event.target.value)*price) + Number.EPSILON) * 100) / 100;
+            result.textContent = `${ch}`;
+        });
+    </script>
+</th:block>

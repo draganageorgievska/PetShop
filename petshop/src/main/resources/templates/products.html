@@ -1,0 +1,48 @@
+<div xmlns:th="http://www.thymeleaf.org">
+    <section class="text-center mt-5">
+        <div class="container">
+            <h3 class="text-center" th:text="${animal!=null} ? ${animal.getDisplayValue()} : ''"></h3>
+        </div>
+    </section>
+    <div class="ml-2" th:if="${animal!=null}">
+        <form method="post" th:action="@{'/products/filter/{animal}' (animal=${animal})}">
+            <input th:value="${category}!=null ? ${category} : null" type="hidden" name="category">
+            <label for="filterPrice">Filter by Price</label><br>
+            <select id="filterPrice" name="filterPrice" required>
+                <option>
+                </option>
+                <option th:value="1">
+                    Lowest to Highest
+                </option>
+                <option th:value="2">
+                    Highest to Lowest
+                </option>
+            </select><br>
+            <button type="submit" style="background: #1c0221; color: #adbdff">Filter</button>
+        </form>
+    </div>
+    <div class="container mb-4" style="margin-left: 200px;width: 80%">
+        <div><div class="col mb-3">
+            <div class="row">
+                <div class="col-sm-12 col-md-12" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a href="/admin/products/add-form" style="background: #1c0221; color: #adbdff; float: right" class="btn add-product-btn">
+                        Add new product
+                    </a>
+                </div>
+            </div>
+        </div>
+            <div class="row" th:if="${products.size() > 0}">
+                <div class="content" style="display: flex;flex-wrap: wrap;">
+                    <div class="product" th:each="product : ${products}" style="width: 200px;margin-right: 20px">
+                        <a th:href="@{'/products/showProduct/{id}' (id=${product.getId()})}" style="color: #1c0221;text-decoration: none">
+                            <img th:src="@{${product.getImage()}}" width="200px">
+                            <p th:text="${product.getName()}"></p>
+                            <p th:text="'$'+${product.getPrice()}"></p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
